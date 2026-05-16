@@ -6,10 +6,12 @@ import com.tourismSN.backend.destination.model.BudgetRange;
 import com.tourismSN.backend.destination.model.Category;
 import com.tourismSN.backend.destination.model.Destination;
 import java.util.List;
+import jakarta.transaction.Transactional;
  
 @Service
 @RequiredArgsConstructor
 public class DestinationService {
+ 
     private final DestinationRepository destinationRepository;
  
     public List<Destination> getAll(String region, String category, String budget) {
@@ -26,7 +28,7 @@ public class DestinationService {
     public Destination create(Destination destination) {
         return destinationRepository.save(destination);
     }
- 
+
     public Destination update(Long id, Destination updated) {
         Destination existing = getById(id);
         existing.setName(updated.getName());
@@ -40,7 +42,9 @@ public class DestinationService {
         return destinationRepository.save(existing);
     }
  
+    @Transactional
     public void delete(Long id) {
+        destinationRepository.deleteItineraryStepsByDestinationId(id);
         destinationRepository.deleteById(id);
     }
 }
