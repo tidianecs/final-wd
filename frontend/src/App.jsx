@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './auth/AuthContext'
 import { PrivateRoute, AdminRoute } from './auth/PrivateRoute'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 // Pages publiques
 import Home            from './pages/Home'
 import Login           from './pages/Login'
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   )
 }
