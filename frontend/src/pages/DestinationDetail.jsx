@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { ArrowLeftIcon, MapPinIcon, TrashIcon, ArrowTopRightOnSquareIcon, PlusCircleIcon, LeafIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon, MapPinIcon, TrashIcon, ArrowTopRightOnSquareIcon, PlusCircleIcon, SparklesIcon } from '@heroicons/react/24/outline'
 import { BuildingLibraryIcon, BeakerIcon, TrophyIcon, CakeIcon } from '@heroicons/react/24/outline'
 import { getDestination, deleteDestination } from '../api/destinationApi'
 import { useAuth } from '../auth/AuthContext'
@@ -12,7 +12,7 @@ const budgetLabels = {
 }
 
 const categoryIcons = {
-  NATURE:      <BeakerIcon className="w-4 h-4" />,
+  NATURE:      <SparklesIcon className="w-4 h-4" />,
   CULTURE:     <BuildingLibraryIcon className="w-4 h-4" />,
   PLAGE:       <TrophyIcon className="w-4 h-4" />,
   SPORT:       <TrophyIcon className="w-4 h-4" />,
