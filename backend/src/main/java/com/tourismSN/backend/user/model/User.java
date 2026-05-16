@@ -1,14 +1,14 @@
 package com.tourismSN.backend.user.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
+ 
 @Entity
 @Table(name = "users")
 @Getter
@@ -17,51 +17,47 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+ 
     @Column(unique = true, nullable = false)
     private String email;
-
+ 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
-
+ 
     private String firstName;
     private String lastName;
-
-    // TOURIST par défaut, ADMIN uniquement via data.sql
+ 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
+ 
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
-    // Rempli automatiquement avant chaque INSERT en base
+ 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
+ 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
-
-    // Email is uniq that's why we choose it to return the user
+ 
     @Override
     public String getUsername() {
         return email;
     }
-
+ 
     @Override
     public String getPassword() {
         return password;
     }
-
-    // We return true for all because no ban logic for the moment
+ 
     @Override public boolean isAccountNonExpired()     { 
         return true; 
     }
