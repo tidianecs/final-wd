@@ -44,7 +44,6 @@ export default function Itineraries() {
   return (
     <div className="space-y-8">
 
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white mb-1">Mes itinéraires</h1>
@@ -58,7 +57,6 @@ export default function Itineraries() {
         </Link>
       </div>
 
-      {/* Liste */}
       {itineraries.length === 0 ? (
         <div className="text-center py-20">
           <MapIcon className="w-16 h-16 mx-auto mb-4 text-gray-600" />
@@ -78,7 +76,6 @@ export default function Itineraries() {
           {itineraries.map(itinerary => (
             <div key={itinerary.id} className="card hover:border-brand/40 transition-colors">
 
-              {/* Header card */}
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h2 className="text-lg font-semibold text-white mb-1">
@@ -105,7 +102,6 @@ export default function Itineraries() {
                 </div>
               </div>
 
-              {/* Étapes */}
               {itinerary.steps && itinerary.steps.length > 0 ? (
                 <div className="space-y-2">
                   {itinerary.steps.slice(0, 3).map((step, idx) => (
@@ -131,7 +127,6 @@ export default function Itineraries() {
                 <p className="text-gray-500 text-sm">Aucune étape ajoutée.</p>
               )}
 
-              {/* Footer card */}
               <div className="mt-4 pt-4 border-t border-dark-border">
                 <button
                   onClick={() => navigate(`/itineraries/${itinerary.id}/edit`)}

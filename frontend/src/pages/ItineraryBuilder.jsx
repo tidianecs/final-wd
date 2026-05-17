@@ -5,30 +5,22 @@ import { createItinerary, updateItinerary, getItinerary } from '../api/itinerary
 import { getDestinations } from '../api/destinationApi'
 
 export default function ItineraryBuilder() {
-  const { id }   = useParams()   // défini si on est en mode édition
+  const { id }   = useParams()
   const navigate = useNavigate()
   const isEdit   = !!id
-
-  // ── Form state ─────────────────────────────────────────────
   const [title, setTitle]       = useState('')
   const [duration, setDuration] = useState(1)
-  const [steps, setSteps]       = useState([])   // { destinationId, dayNumber, orderIndex, notes, _dest }
-
-  // ── Destinations disponibles ────────────────────────────────
+  const [steps, setSteps]       = useState([])
   const [destinations, setDestinations] = useState([])
   const [search, setSearch]             = useState('')
-
-  // ── UI state ───────────────────────────────────────────────
   const [loading, setLoading]   = useState(isEdit)
   const [saving, setSaving]     = useState(false)
   const [error, setError]       = useState('')
 
-  // Charger les destinations au montage
   useEffect(() => {
     getDestinations().then(res => setDestinations(res.data)).catch(console.error)
   }, [])
 
-  // Si édition : charger l'itinéraire existant
   useEffect(() => {
     if (!isEdit) return
     getItinerary(id)
@@ -48,13 +40,12 @@ export default function ItineraryBuilder() {
       .finally(() => setLoading(false))
   }, [id])
 
-  // ── Filtrage destinations par recherche ─────────────────────
   const filtered = destinations.filter(d =>
     d.name.toLowerCase().includes(search.toLowerCase()) ||
     d.region?.toLowerCase().includes(search.toLowerCase())
   )
 
-  // ── Ajouter une étape ───────────────────────────────────────
+  // Add a Step
   function addStep(dest) {
     setSteps(prev => [
       ...prev,
@@ -68,17 +59,17 @@ export default function ItineraryBuilder() {
     ])
   }
 
-  // ── Modifier une étape ──────────────────────────────────────
+  // Modify a Step
   function updateStep(idx, key, value) {
     setSteps(prev => prev.map((s, i) => i === idx ? { ...s, [key]: value } : s))
   }
 
-  // ── Supprimer une étape ─────────────────────────────────────
+  // Delete One Step
   function removeStep(idx) {
     setSteps(prev => prev.filter((_, i) => i !== idx))
   }
 
-  // ── Sauvegarder ────────────────────────────────────────────
+  // Save it
   async function handleSave() {
     if (!title.trim()) { setError('Le titre est requis.'); return }
     if (steps.length === 0) { setError('Ajoute au moins une étape.'); return }
@@ -122,7 +113,6 @@ export default function ItineraryBuilder() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
 
-      {/* Header */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/itineraries')}
@@ -135,7 +125,6 @@ export default function ItineraryBuilder() {
         </h1>
       </div>
 
-      {/* Erreur */}
       {error && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3">
           <p className="text-red-400 text-sm">{error}</p>
@@ -143,11 +132,8 @@ export default function ItineraryBuilder() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        {/* ── Colonne gauche : infos + étapes ─────────────────── */}
         <div className="space-y-6">
 
-          {/* Infos générales */}
           <div className="card space-y-4">
             <h2 className="text-lg font-semibold text-white">Informations</h2>
 
@@ -179,7 +165,6 @@ export default function ItineraryBuilder() {
             </div>
           </div>
 
-          {/* Étapes ajoutées */}
           <div className="card space-y-3">
             <h2 className="text-lg font-semibold text-white">
               Étapes ({steps.length})
@@ -232,7 +217,6 @@ export default function ItineraryBuilder() {
             )}
           </div>
 
-          {/* Bouton sauvegarder */}
           <button
             onClick={handleSave}
             disabled={saving}
@@ -248,11 +232,8 @@ export default function ItineraryBuilder() {
 
         </div>
 
-        {/* ── Colonne droite : sélection destinations ──────────── */}
         <div className="card space-y-4">
           <h2 className="text-lg font-semibold text-white">Ajouter des destinations</h2>
-
-          {/* Recherche */}
           <div className="relative">
             <MagnifyingGlassIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input
@@ -264,7 +245,6 @@ export default function ItineraryBuilder() {
             />
           </div>
 
-          {/* Liste destinations */}
           <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
             {filtered.map(dest => {
               const alreadyAdded = steps.some(s => s.destinationId === dest.id)
