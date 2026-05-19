@@ -28,8 +28,8 @@ Icônes: HeroIcons
 
 == Déploiement ==
 
-Railway => Backend Spring Boot + PostgreSQL
-Vercel => Frontend React
+Railway => Backend Spring Boot + PostgreSQL (https://final-wd-production.up.railway.app)
+Vercel => Frontend React (https://final-wd.vercel.app)
 
 Admin Account => {
 "email": "tidianecs20@gmail.com",
